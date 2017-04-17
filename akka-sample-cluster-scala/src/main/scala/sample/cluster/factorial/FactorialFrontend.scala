@@ -53,8 +53,9 @@ object FactorialFrontend {
     system.log.info("Factorials will start when 2 backend members in the cluster.")
 
     Cluster(system) registerOnMemberUp {
-      system.actorOf(Props(classOf[FactorialFrontend], upToN, true),
-        name = "factorialFrontend")
+      system.actorOf(Props(classOf[FactorialFrontend], upToN, true), name = "factorialFrontend")
+
+      system.actorOf(Props[MetricsListener], name = "metricsListener")
     }
 
     Cluster(system).registerOnMemberRemoved {
